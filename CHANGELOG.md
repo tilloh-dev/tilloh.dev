@@ -8,18 +8,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [global] Adopt tide process 0.4.4: `AGENTS.md` replaces `CLAUDE.md`, docs for requirements, backlog and operations, Renovate config, `.claude/settings.json` for the tide plugin.
+- [global] CI workflow `ci.yml` with lint, type check, test, build, audit, filesystem and backend image scan, changelog check and a single required `gate` job.
 - [home] Replace Navigation grid on homepage with a time-based greeting component that addresses the current user by their identifier (morning/afternoon/evening/night, DE + EN).
 
 ### Changed
 
+- [global] Switch package manager from npm to a pnpm workspace (frontend, backend, e2e); resolved versions stay as before.
+- [global] Deploy and restart jobs use the GitHub environment `production`; third-party actions are pinned by commit SHA.
+- [backend] Declare dependencies that were only resolved via npm hoisting: `express`, `@fastify/cors`, `mongodb`, `@types/express`.
 - [global] Replace broken date/ID emojis with Carbon `EventSchedule` and `Identification` icons across admin and feature components (Identifiers, Toggles, LinkPresets, Activities, Jokes, JokeOfTheDay).
 - [global] Redesign login screen: add logo, `tilloh.dev` title, and tagline above the login input; left-align branding with the input field; compensate PNG transparent padding via negative margin.
 - [global] Hide header and redirect to home route when no valid identifier is set; login input is shown full-screen without navigation elements.
 - [global] Replace emoji storage-state indicator (🌐/📴) in header with colored Carbon Cloud/CloudOffline icons displayed inline after the page title.
 - [global] Increase header route icon size to `1em` (relative to h2 font-size) and align it using flexbox with `gap: 0.3em`.
 
+### Removed
+
+- [global] `develop` deployments to Docker Hub and the `.claude` submodule.
+
 ### Fixed
 
+- [backend] Fix vulnerable dependencies: `fastify` 5.12.5 (authentication bypass), `@fastify/static` 10.1, `@fastify/busboy` 3.2 via overrides; npm removed from the backend runtime image.
 - [global] Fix GlobalMenu showing apps with inactive toggles: `getToggleValue` was defaulting to `true` when a toggle key was missing or unreachable, causing all apps to appear. Changed default to `false` so apps are only shown when their toggle is explicitly enabled.
 - [global] Fix letter-spacing not applying to text elements: Carbon CSS explicitly sets `letter-spacing` via its own tokens on `p`, `h1`, etc., overriding the inherited `body` value. Added `body * { letter-spacing: var(--letter-spacing) !important }` to enforce the global spacing across all child elements.
 

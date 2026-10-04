@@ -4,17 +4,19 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "npm run start:db; nx serve tilloh-dev | npx pino-pretty@13.0.0",
-    "lint": "nx lint tilloh-dev",
+    "dev": "pnpm start:db; nx serve tilloh-dev | pnpm dlx pino-pretty@13.0.0",
+    "lint": "nx run-many -t lint",
     "build": "nx build tilloh-dev",
     "build:db": "docker pull mongo && docker run -d -p 27017:27017 --name mongodb mongo",
-    "remove:db": "npm run stop:db && docker rm mongodb",
+    "remove:db": "pnpm stop:db && docker rm mongodb",
     "start:db": "docker start mongodb",
-    "stop:db": "docker stop mongodb"
+    "stop:db": "docker stop mongodb",
+    "test": "nx run-many -t test"
   },
   "dependencies": {
+    "@fastify/cors": "^11.2.0",
     "@fastify/multipart": "^9.4.0",
-    "@fastify/static": "^9.0.0",
+    "@fastify/static": "^10.1.2",
     "@nest-lab/fastify-multer": "^1.2.0",
     "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.1.14",
@@ -34,7 +36,9 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",
     "cron": "^4.4.0",
-    "fastify": "^5.7.4",
+    "express": "^5.2.1",
+    "fastify": "^5.12.5",
+    "mongodb": "^7.0.0",
     "mongoose": "^9.2.2",
     "nestjs-pino": "^4.6.0",
     "pino-http": "^11.0.0",
@@ -60,6 +64,7 @@
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.13",
     "@swc/helpers": "^0.5.19",
+    "@types/express": "^4.17.22",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.19.11",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
@@ -75,5 +80,9 @@
     "ts-node": "10.9.2",
     "typescript": "^5.9.3",
     "url-loader": "^4.1.1"
+  },
+  "overrides": {
+    "fastify": "$fastify",
+    "@fastify/busboy": "^3.2.2"
   }
 }

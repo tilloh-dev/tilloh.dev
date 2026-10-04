@@ -1,0 +1,4 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>tilloh-dev/tilloh-development-pipeline//renovate/default"]
+}

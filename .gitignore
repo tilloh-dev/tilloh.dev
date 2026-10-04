@@ -54,3 +54,4 @@ frontend/static/config/config.json
 
 # Playwright MCP
 .playwright-mcp
+.claude/settings.local.json

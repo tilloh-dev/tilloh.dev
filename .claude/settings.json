@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "extraKnownMarketplaces": {
+    "tilloh": {
+      "source": {
+        "source": "github",
+        "repo": "tilloh-dev/tilloh-development-pipeline"
+      },
+      "autoUpdate": true
+    }
+  },
+  "enabledPlugins": {
+    "tide@tilloh": true
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TODO_TOOLS": "1"
+  },
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Bash(gh auth login *)",
+      "Bash(gh auth switch *)",
+      "Bash(gh auth refresh *)",
+      "Bash(gh auth token *)",
+      "Bash(gh auth setup-git *)",
+      "Bash(gh secret *)",
+      "Bash(gh repo delete *)"
+    ]
+  }
+}

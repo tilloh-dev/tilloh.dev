@@ -39,13 +39,13 @@ OCR_SPACE_API_KEY="<api-key>" # from bitwarden
 1. Start mongodb
 
 ```
-npm run start:db
+pnpm start:db
 ```
 
 2. Start the backend
 
 ```
-npm run dev
+pnpm dev
 ```
 
 ### Nx generation
@@ -75,7 +75,7 @@ Libraries are shareable across libraries and applications.
 1. Build the backend
 
 ```
-npm run build
+pnpm build
 ```
 
 2. Deploy the backend by coping the `dist/apps/tilloh-dev` folder content to the server in `/home/tilloh/api`

@@ -22,18 +22,18 @@ There are a few usable toggles in the frontend. These can be created in the admi
 
 ## Development
 
-1. Install npm dependencies.
+1. Install dependencies.
 
 ```
 cd frontend
-npm install
+pnpm install
 ```
 
 2. Start the development server.
 
 ```
 cd frontend
-npm run dev
+pnpm dev
 ```
 
 3. Open the browser at `http://localhost:5173`.
@@ -69,7 +69,7 @@ The frontend uses the `sveltekit-i18n` library for internationalization. The tra
 1. Build the frontend artifact
 
 ```
-npm run build
+pnpm build
 ```
 
 2. Deploy the frontend by coping the `dist` folder content to the server in `/home/tilloh/html`.
