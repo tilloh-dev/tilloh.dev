@@ -11,12 +11,13 @@ jobs:
   restart:
     name: Restart backend service
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Restarting backend service on uberspace
         run: echo "Restarting backend service..."
 
       - name: Remove remote node_modules
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -28,7 +29,7 @@ jobs:
 
       - name: Remotely install dependencies (normal)
         if: ${{ github.event.inputs.legacyPeerDeps == 'false' }}
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -40,7 +41,7 @@ jobs:
 
       - name: Remotely install dependencies (legacy peer deps)
         if: ${{ github.event.inputs.legacyPeerDeps == 'true' }}
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -51,7 +52,7 @@ jobs:
             npm i --legacy-peer-deps
 
       - name: Stop backend service
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -62,7 +63,7 @@ jobs:
             supervisorctl stop tilloh-api-daemon
 
       - name: Start backend service
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}

@@ -1,4 +1,5 @@
 name: Backend Deployment to uberspace
+# Checks run in ci.yml on every PR; this workflow only builds and deploys.
 on:
   push:
     branches:
@@ -6,168 +7,28 @@ on:
     paths:
       - "backend/**"
 
+permissions:
+  contents: read
+
 jobs:
-  verify:
-    name: Audit & lint affected projects
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Cache node_modules
-        id: node_modules_cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Debug cache hit
-        run: echo ${{ steps.node_modules_cache.outputs.cache-hit }}
-
-      - name: Npm audit
-        run: |
-          cd backend
-          npm audit --audit-level=critical --omit=dev
-
-      - name: Npm install
-        if: steps.node_modules_cache.outputs.cache-hit != 'true' # Skip if cache hit
-        run: |
-          cd backend
-          npm i --legacy-peer-deps
-
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
-        with:
-          main-branch-name: ${{ github.base_ref}}
-
-      - name: Lint affected projects
-        run: |
-          cd backend
-          NX_BRANCH=${{ github.head_ref }} npx nx affected:lint --parallel --base=$NX_BASE --head=$NX_HEAD
-
-  build_matrix:
-    name: Export affected projects
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Fetch information about branches and commits
-        run: git fetch origin main
-
-      - name: Cache node_modules
-        id: node_modules_cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Npm install
-        if: steps.node_modules_cache.outputs.cache-hit != 'true' # Skip if cache hit
-        run: |
-          cd backend
-          npm i --legacy-peer-deps
-
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
-        with:
-          main-branch-name: ${{ github.base_ref}}
-
-      - name: Output affected projects in nx workspace and output array
-        id: set-matrix
-        run: |
-          cd backend
-          MATRIX=(`./node_modules/.bin/nx show projects --base=$NX_BASE --head=$NX_HEAD --affected |
-          tr '\n' ' '`)
-          echo "::set-output name=matrix::$(jq --compact-output --null-input '$ARGS.positional' --args "${MATRIX[@]}")"
-
-      - name: Debug variables
-        run: |
-          echo matrix: ${{ steps.set-matrix.outputs.matrix }}
-          echo nx base tag: $NX_BASE
-          echo nx head tag: $NX_HEAD
-
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-
-  test:
-    name: Test affected projects
-    needs: [build_matrix]
-    if: ${{ !contains(needs.build_matrix.outputs.matrix , '[]') }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: ${{ fromJson(needs.build_matrix.outputs.matrix) }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Cache node_modules
-        id: node_modules_cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Npm install
-        if: steps.node_modules_cache.outputs.cache-hit != 'true' # Skip if cache hit
-        run: |
-          cd backend
-          npm i --legacy-peer-deps
-
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
-        with:
-          main-branch-name: ${{ github.base_ref}}
-
-      - name: Test affected projects
-        run: |
-          cd backend
-          NX_BRANCH=${{ github.head_ref }} npx nx run ${{ matrix.project }}:test --parallel --silent
-
   build:
     name: Build
-    needs: [test, verify]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          fetch-depth: 0
+          node-version-file: .node-version
+          cache: pnpm
 
-      - name: Use Node.js 20.11.1 LTS version
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.16.0
-
-      - name: Cache node_modules
-        id: node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules
-
-      - name: Npm install
-        if: steps.node_modules.outputs.cache-hit != 'true' # Skip if cache hit
-        run: |
-          cd backend
-          npm i --legacy-peer-deps
+      - run: pnpm install --frozen-lockfile
 
       - name: Build backend
-        run: |
-          cd backend
-          npm run build
+        run: pnpm --filter ./backend build
 
       - name: Copy package.json to dist
-        run: |
-          cd backend
-          cp package.json dist/apps/tilloh-dev
+        run: cp backend/package.json backend/dist/apps/tilloh-dev
 
       - name: Zip backend artifact
         run: |
@@ -175,7 +36,7 @@ jobs:
           zip -r dist.zip tilloh-dev
 
       - name: Upload zipped backend artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: artifact
           path: backend/dist/apps/dist.zip
@@ -184,9 +45,10 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: artifact
           path: backend/dist/apps
@@ -198,8 +60,8 @@ jobs:
           mv backend_temp/tilloh-dev/* backend_target/
           rm -rf backend_temp
 
-      - name: Recursivly upload built backend files to uberspace
-        uses: appleboy/scp-action@master
+      - name: Recursively upload built backend files to uberspace
+        uses: appleboy/scp-action@ff85246acaad7bdce478db94a363cd2bf7c90345 # v1.0.0
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -210,7 +72,7 @@ jobs:
           overwrite: true
 
       - name: SSH into the remote server and move files
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -220,8 +82,9 @@ jobs:
             cp -rf api/backend_target/. api/
             rm -rf api/backend_target
 
+      # Deliberate deviation: the host installs with npm (see AGENTS.md).
       - name: Install dependencies in server
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
@@ -233,7 +96,7 @@ jobs:
             npm i --legacy-peer-deps
 
       - name: Restart backend service
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.SSHHOST }}
           username: ${{ secrets.SSHUSER }}
