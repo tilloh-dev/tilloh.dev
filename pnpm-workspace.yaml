@@ -16,3 +16,9 @@ allowBuilds:              # install scripts only for these packages
   less: false
   svelte-preprocess: false
   unrs-resolver: false
+
+# Security fixes for transitive dependencies; mirrored in backend/package.json
+# "overrides" for the npm install on Uberspace and in the image.
+overrides:
+  fastify: ^5.12.5            # @nestjs/platform-fastify 11 pins 5.11.3
+  '@fastify/busboy': ^3.2.2   # fastify-multer still requires ^1

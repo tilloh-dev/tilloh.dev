@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [global] Replace emoji storage-state indicator (🌐/📴) in header with colored Carbon Cloud/CloudOffline icons displayed inline after the page title.
 - [global] Increase header route icon size to `1em` (relative to h2 font-size) and align it using flexbox with `gap: 0.3em`.
 
+### Fixed
+
+- [backend] Fix vulnerable dependencies: `fastify` 5.12.5 (authentication bypass), `@fastify/static` 10.1, `@fastify/busboy` 3.2 via overrides; npm removed from the backend runtime image.
+
 ### Removed
 
 - [global] `develop` deployments to Docker Hub and the `.claude` submodule.
