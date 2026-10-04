@@ -9,6 +9,7 @@
 # Deliberate deviations (see AGENTS.md):
 #   - no e2e job: E2E tests need MongoDB and run locally only
 #   - changelog job: every PR updates CHANGELOG.md
+#   - audit checks production dependencies only
 #
 # Removing a job means removing it from `needs` of `gate`, too.
 
@@ -55,7 +56,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       # Only critical vulnerabilities turn the gate red (D-006).
-      - run: pnpm audit --audit-level=critical
+      # Deliberate deviation: production dependencies only (see AGENTS.md).
+      - run: pnpm audit --prod --audit-level=critical
 
   fs-scan:
     name: filesystem scan

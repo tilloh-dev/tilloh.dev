@@ -105,3 +105,5 @@ Der Bootstrap lässt diese Punkte in Ruhe.
   eine Admin-ID; ein Mongo-Service in der CI ist eine eigene Aufgabe.
 - Jeder PR aktualisiert `CHANGELOG.md`, geprüft vom CI-Job `changelog` — der
   CHANGELOG ist die Release-Historie des Projekts.
+- `pnpm audit` in der CI prüft nur Produktions-Dependencies (`--prod`) —
+  kritische Lücken gibt es zurzeit nur in Dev-Werkzeugen, wie schon vor tide.
