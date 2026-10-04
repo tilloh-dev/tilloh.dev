@@ -23,16 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [global] Replace emoji storage-state indicator (🌐/📴) in header with colored Carbon Cloud/CloudOffline icons displayed inline after the page title.
 - [global] Increase header route icon size to `1em` (relative to h2 font-size) and align it using flexbox with `gap: 0.3em`.
 
-### Fixed
-
-- [backend] Fix vulnerable dependencies: `fastify` 5.12.5 (authentication bypass), `@fastify/static` 10.1, `@fastify/busboy` 3.2 via overrides; npm removed from the backend runtime image.
-
 ### Removed
 
 - [global] `develop` deployments to Docker Hub and the `.claude` submodule.
 
 ### Fixed
 
+- [backend] Fix vulnerable dependencies: `fastify` 5.12.5 (authentication bypass), `@fastify/static` 10.1, `@fastify/busboy` 3.2 via overrides; npm removed from the backend runtime image.
 - [global] Fix GlobalMenu showing apps with inactive toggles: `getToggleValue` was defaulting to `true` when a toggle key was missing or unreachable, causing all apps to appear. Changed default to `false` so apps are only shown when their toggle is explicitly enabled.
 - [global] Fix letter-spacing not applying to text elements: Carbon CSS explicitly sets `letter-spacing` via its own tokens on `p`, `h1`, etc., overriding the inherited `body` value. Added `body * { letter-spacing: var(--letter-spacing) !important }` to enforce the global spacing across all child elements.
 
