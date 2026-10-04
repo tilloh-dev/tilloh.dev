@@ -16,7 +16,7 @@ To run the frontend using Docker, you can use the provided Dockerfile. First, en
 
 1. Build the frontend project
 
-`cd frontend && npm run build`
+`pnpm --filter ./frontend build`
 
 2. Build the image
 
@@ -38,7 +38,7 @@ To run the backend using Docker, you can use the provided Dockerfile. Just like 
 
 1. Build the backend project
 
-`cd backend && npm run build`
+`pnpm --filter ./backend build`
 
 2. Build the image
 
@@ -56,7 +56,7 @@ To start all services, navigate to the root directory of the project and execute
 
 1. Build the frontend project
 
-`cd frontend && npm run build`
+`pnpm --filter ./frontend build`
 
 2. Build the image
 
@@ -64,7 +64,7 @@ To start all services, navigate to the root directory of the project and execute
 
 3. Build the backend project
 
-`cd backend && npm run build`
+`pnpm --filter ./backend build`
 
 4. Build the image
 
@@ -88,22 +88,22 @@ E2E tests run locally with [Playwright](https://playwright.dev/) against a real 
 
 ```bash
 # 1. Start MongoDB
-cd backend && npm run start:db
+pnpm --filter ./backend start:db
 
 # 2. Install E2E dependencies and Chromium
-npm run e2e:install
+pnpm e2e:install
 
 # 3. Create and fill .env.test
-npm run e2e:setup
+pnpm e2e:setup
 # Open e2e/.env.test and set E2E_ADMIN_IDENTIFIER (= ADMIN_IDENTIFIER from backend/.env)
 ```
 
 ### Running tests
 
 ```bash
-npm run e2e            # Headless (fast)
-npm run e2e:headed     # With visible browser
-npm run e2e:ui         # Playwright UI (interactive, with timeline and traces)
+pnpm e2e            # Headless (fast)
+pnpm e2e:headed     # With visible browser
+pnpm e2e:ui         # Playwright UI (interactive, with timeline and traces)
 ```
 
 ### Structure
@@ -130,10 +130,10 @@ e2e/
 
 ## Development
 
-Before committing changes it is necessary to fix all linting errors. After cloning this repository, `npm install` will automatically install a pre-commit hook that will run the linter before committing changes!
+Before committing changes it is necessary to fix all linting errors. After cloning this repository, `pnpm install` will automatically install a pre-commit hook that will run the linter before committing changes!
 
-Start frontend and backend development server with `npm run dev`.
+Start frontend and backend development server with `pnpm dev`.
 
 ### Gitmoji
 
-This repository uses [gitmoji](https://gitmoji.dev/) to categorize commits. By installing npm dependencies in the root of this repository, a post-commit hook will automatically add a gitmoji to your commit message. If you want to disable this feature, you can remove the post-commit hook by running `rm .git/hooks/post-commit`.
+This repository uses [gitmoji](https://gitmoji.dev/) to categorize commits. By installing dependencies with pnpm in the root of this repository, a post-commit hook will automatically add a gitmoji to your commit message. If you want to disable this feature, you can remove the post-commit hook by running `rm .git/hooks/post-commit`.

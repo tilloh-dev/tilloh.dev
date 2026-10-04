@@ -36,7 +36,7 @@ export default defineConfig({
   globalTeardown: './global-teardown.ts',
   webServer: [
     {
-      command: 'cd ../frontend && npm run dev',
+      command: 'cd ../frontend && pnpm dev',
       url: FRONTEND_URL,
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

@@ -1,5 +1,5 @@
 {
-  "name": "tilloh.dev-backend",
+  "name": "tilloh.dev-frontend",
   "version": "1.0.3",
   "license": "MIT",
   "type": "module",
@@ -10,7 +10,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "nx lint frontend"
   },
   "devDependencies": {
     "@neoconfetti/svelte": "^2.2.2",
@@ -34,6 +35,7 @@
     "@vitest/ui": "^4.0.18",
     "eslint": "^9.39.3",
     "eslint-config-prettier": "^10.1.5",
+    "jsonc-eslint-parser": "^2.4.0",
     "npm": "^11.3.0",
     "nx": "^22.5.2",
     "prettier": "^3.5.3",
@@ -53,5 +55,6 @@
     "carbon-icons-svelte": "^13.3.0",
     "socket.io-client": "^4.8.1",
     "sveltekit-i18n": "^2.4.2"
-  }
+  },
+  "private": true
 }

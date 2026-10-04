@@ -1,0 +1,18 @@
+packages:
+  - frontend
+  - backend
+  - e2e
+
+minimumReleaseAge: 1440   # minutes: new versions only after one day
+allowBuilds:              # install scripts only for these packages
+  '@swc/core': true       # native binary for the backend build
+  esbuild: true           # native binary for vite
+  nx: true                # native nx binaries
+  '@nestjs/core': false  # funding message only
+  '@parcel/watcher': false
+  '@scarf/scarf': false   # telemetry
+  carbon-components-svelte: false
+  core-js-pure: false
+  less: false
+  svelte-preprocess: false
+  unrs-resolver: false
