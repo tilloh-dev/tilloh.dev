@@ -2,10 +2,14 @@
      docs/requirements/ ab. Überschriften folgen der Projektsprache; die
      deutsche Fassung steht in der Tabelle in D-005. Keys bleiben immer
      unübersetzt: F-<nr>, FA-<n>, NFA-<n>.
-     Nach der Umsetzung ist das Dokument eingefroren. Die lebende Erklärung
-     des Features gehört nach docs/features/. -->
+     Nach der Umsetzung ist das Dokument eingefroren (D-038): Es bekommt die
+     Zeile „Umgesetzt“. Ersetzt es Verhalten eines früheren Features, nennt
+     „Ersetzt“ die betroffenen FAs. -->
 
 # F-<nr> — <feature name>
+
+Ersetzt: <!-- F-<nr> FA-<n>, oder: nichts -->
+Umgesetzt: <!-- PR #<nr> (<datum>), trägt die KI im PR vor dem Review ein -->
 
 ## Goal
 <!-- 1–2 sentences: what and why -->

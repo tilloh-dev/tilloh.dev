@@ -3,27 +3,25 @@
 Personal portfolio and tool collection for Tim and a small, known group of
 users: SvelteKit SPA frontend, NestJS API with MongoDB, NX monorepo.
 
-Prozessstand: tide 0.4.4 (2026-10-04)
+Prozessstand: tide 0.7.0 (2026-10-06)
 Sicherheitsstufe: 2 — login via identifier, personal data (bookmarks, todos, chat), known user group only.
 
-## Pflichtregeln
+This file is the project's contract: it applies to everyone working here,
+human or AI. How the AI works with Tim comes with the tide plugin; without
+tide, only this file applies.
 
-- Antworten im Chat: kurz und scanbar, Ergebnis oder nächste Handlung zuerst
-  (Details: Skill `tide:klartext`).
-- Texte für Menschen — Doku, PRs, Commits, Backlog: Antwort zuerst, Struktur
-  statt Prosa, nur was der Leser braucht (Details: Skill `tide:leserfreundlich`).
-- Sobald du etwas beantwortet hast, behandle diese Antwort als erledigt. Richte
-  dein Nachdenken in späteren Beiträgen darauf, was die Person jetzt fragt, und
-  gehe frühere Antworten nicht erneut durch, es sei denn, die Person fragt danach
-  oder weist auf ein Problem damit hin, oder du selbst einen Fehler bemerkst.
-- Lege bei der Ausführung einer Aufgabe zuerst eine Aufgabenliste an und halte
-  sie aktuell. Eine Anfrage ist erst erledigt, wenn alle Punkte abgearbeitet
-  sind. Ausnahme: Greift ein Stopp-Kriterium, nenne den Grund zuerst und liste
-  die offenen Punkte auf.
-- Zeit ist wichtig. Aufgabenliste und Checks bleiben davon unberührt.
-- Git und GitHub nur als tilloh-bot. Nie direkt auf `main` pushen, jede
-  Änderung kommt per PR.
-- Sprache: siehe Abschnitt „Language“.
+## Rules
+
+- Every change comes as a PR, never directly to `main`. A PR is merged only
+  when the `gate` check is green and Tim has approved.
+- No `docs/DESIGN.md` yet (`/tide:design`); until then the existing styles
+  are the reference. New design values (colour, font size) only after asking.
+- Dependencies: as few as possible; every new one is justified in the PR.
+- Tests: unit tests for logic; E2E for login and the core flows (run locally,
+  see deviations).
+- Secrets never go into the repo; `.env` files stay local.
+- Every PR updates `CHANGELOG.md` under `## [Unreleased]` (Renovate PRs
+  excepted).
 
 ## Language
 
@@ -37,24 +35,13 @@ Sicherheitsstufe: 2 — login via identifier, personal data (bookmarks, todos, c
 | Docs in `docs/` | English |
 | UI texts | German and English via i18n (`de.json`, `en.json`) |
 
-Die Pflichtregeln stehen immer auf Deutsch.
+## Requirements
 
-## Workflow
-
-1. **Plan:** clarify the feature in conversation, write requirements from the
-   template to `docs/requirements/F-<nr>-<name>.md`. Implement only after
-   approval.
-2. **Implement:** autonomously up to the PR. After approval, give Tim the ready
-   line `/goal F-<nr>: alle FA umgesetzt, Checks grün, PR offen, oder
-   Stopp-Grund genannt` to start the implementation. Test first, red, then
-   green; purely visual changes are exempt.
-3. **Stop and ask** on: gap in the requirements, new dependency, DB migration
-   or different security tier, open UI taste question, gate not achievable,
-   better idea for the current feature.
-4. **Finish:** PR with closing overview (result, requirements, checks,
-   changed, next step, observations). Name observations outside the feature
-   with a recommendation; only accepted ones go into `docs/backlog.md`.
-   Every PR updates `CHANGELOG.md` under `## [Unreleased]`.
+Features are described before implementation in
+`docs/requirements/F-<nr>-<name>.md`, from the template `F-000-template.md`.
+After implementation the document is frozen; it gets the line
+`Umgesetzt: PR #<nr> (<date>)`. If a later feature changes the behaviour, the
+new document names it: `Ersetzt: F-<nr> FA-<n>`.
 
 ## Project Docs
 

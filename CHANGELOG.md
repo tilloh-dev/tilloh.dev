@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- [global] Move to tide 0.7.0: `AGENTS.md` is now the project contract (rules, language, requirements, docs, commands); the way of working comes from the tide plugin. Plugin and Renovate preset point to `tilloh-dev/tide`.
 - [global] Switch package manager from npm to a pnpm workspace (frontend, backend, e2e); resolved versions stay as before.
 - [global] Deploy and restart jobs use the GitHub environment `production`; third-party actions are pinned by commit SHA.
 - [backend] Declare dependencies that were only resolved via npm hoisting: `express`, `@fastify/cors`, `mongodb`, `@types/express`.
