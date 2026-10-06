@@ -4,7 +4,7 @@
     "tilloh": {
       "source": {
         "source": "github",
-        "repo": "tilloh-dev/tilloh-development-pipeline"
+        "repo": "tilloh-dev/tide"
       },
       "autoUpdate": true
     }
